@@ -11,6 +11,7 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
   <li>Po vytvoření startovní listiny se kazdému týmu zapisují 2 časy (čas levého terče a čas pravého terče)</li>
   <li>Vyhodnocení vysledků - týmy se seřadí od nejrychlejšího času po nejpomalejší (každá kategorie zvlašť), počítá se vždy ten pomalejší čas z těch dvou                   zapsaných + u každého týmu bude ztráta na prvního</li>
   <li>Vyhodnocení nejrychlejšího proudaře - určí se ten nejrychlejší čas ze všech zapsaných časů (každá kategorie zvlášť) a vypíše se zda to byl levý nebo pravý            proud</li>
+  <li>Vyhodnocení nejlepšího soustřiku (nejmenší rozdíl mezi oběma časy jednoho týmu)</li>
   <li>Vyhodnocení zda se překonal rekord dráhy a když ano o kolik?(pro každou kategorii zvlášť)</li>
 </ul>  
 
