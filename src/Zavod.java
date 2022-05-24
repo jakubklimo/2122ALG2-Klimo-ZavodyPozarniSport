@@ -1,8 +1,20 @@
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
@@ -15,7 +27,9 @@ public class Zavod {
     private int rokKonani;
     private int rocnik;
     private String[] rozhodci = new String[6];
-
+    
+    private String[] split;
+    
     public Zavod(String jmenoZavodu, int rokKonani, int rocnik) {
         this.jmenoZavodu = jmenoZavodu;
         this.rokKonani = rokKonani;
@@ -308,25 +322,106 @@ public class Zavod {
         pocet = zeny.stream().map(_item -> 1).reduce(pocet, Integer::sum);
         return pocet;
     }
+    
+    public void stratovniListina(File startovka) throws FileNotFoundException, IOException{
+        try (BufferedReader reader = new BufferedReader(new FileReader(startovka))){
+            String line,nazev, kategorie;
+            
+            while((line = reader.readLine()) != null){
+                split = line.split(";");
+                
+                nazev = split[0];
+                kategorie = split[1];
+                
+                if("M".equals(kategorie)){
+                    muzi.add(new Tymy(nazev, 'M'));
+                }else if("Z".equals(kategorie)){
+                    zeny.add(new Tymy(nazev, 'Z'));
+                }
+            }
+            reader.close();
+        }
+    }
+    
+    public void vysledkovaListina(File vysledkovka) throws IOException{
+        try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(vysledkovka)))){
+            vyslednePoradiM();
+            vyslednePoradiZ();
+            writer.println("Pořadí;Název;Kategorie;LP;PP;Výsledný čas;Výsledné pořadí");
+            for(Tymy tym : muzi){
+                writer.print(tym.getPoradi());
+                writer.print(";");
+                writer.print(tym.getTym());
+                writer.print(";");
+                writer.print(tym.getKategorie());
+                writer.print(";");
+                writer.print(tym.getLP());
+                writer.print(";");
+                writer.print(tym.getPP());
+                writer.print(";");
+                writer.print(tym.vyslednyCas());
+                writer.print(";");
+                writer.print(tym.getVyslednePoradi());
+                writer.print("\n");
+            }
+            for(Tymy tym : zeny){
+                writer.print(tym.getPoradi());
+                writer.print(";");
+                writer.print(tym.getTym());
+                writer.print(";");
+                writer.print(tym.getKategorie());
+                writer.print(";");
+                writer.print(tym.getLP());
+                writer.print(";");
+                writer.print(tym.getPP());
+                writer.print(";");
+                writer.print(tym.vyslednyCas());
+                writer.print(";");
+                writer.print(tym.getVyslednePoradi());
+                writer.print("\n");
+            }
+        }
+    }
+    
+    public void saveToBinary(File result) throws FileNotFoundException, IOException{
+        try(DataOutputStream out = new DataOutputStream(new FileOutputStream(result, true))){
+            out.writeInt(muzi.size());
+            for(Tymy tym : muzi){
+                out.writeUTF(tym.getTym());
+                out.writeChar(tym.getKategorie());
+                out.writeDouble(tym.getLP());
+                out.writeDouble(tym.getPP());
+                out.writeDouble(tym.vyslednyCas());
+            }
+            for(Tymy tym : zeny){
+                out.writeUTF(tym.getTym());
+                out.writeChar(tym.getKategorie());
+                out.writeDouble(tym.getLP());
+                out.writeDouble(tym.getPP());
+                out.writeDouble(tym.vyslednyCas());
+            }
+        }
+    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Zavod zavod = new Zavod("Kosmonosy", 2022, 25);
-        zavod.registerTym("Obrubce", 'M');
-        zavod.registerTym("DC", 'm');
-        zavod.registerTym("Kosmonosy", 'M');
-        zavod.registerTym("Kosmonosy", 'Z');
-        zavod.registerTym("Bukovno", 'Z');
+        //zavod.registerTym("Obrubce", 'M');
+        //zavod.registerTym("DC", 'm');
+        //zavod.registerTym("Kosmonosy", 'M');
+        //zavod.registerTym("Kosmonosy", 'Z');
+        //zavod.registerTym("Bukovno", 'Z');
         //zavod.deleteTym(2, 'M');
         //zavod.prohoditTymy(1, 2, 'M');
-        zavod.setBoth(3, 'M', 16.45, 16.46);
-        zavod.setNeplatny(2, 'M');
-        zavod.setBoth(1, 'M', 16.98, 17.05);
-        zavod.setBoth(1, 'Z', 16.11, 18.11);
-        zavod.sortByPoradi();
-        zavod.kontrolaPlatnosti();
+        //zavod.setBoth(3, 'M', 16.45, 16.46);
+        //zavod.setNeplatny(2, 'M');
+        //zavod.setBoth(1, 'M', 16.98, 17.05);
+        //zavod.setBoth(1, 'Z', 16.11, 18.11);
+        //zavod.sortByPoradi();
+        //zavod.kontrolaPlatnosti();
+        zavod.stratovniListina(new File("Start.csv"));
         System.out.println(zavod.startovniListina());
-        System.out.println(zavod);
-        System.out.println(zavod.nejlepiSestriky());
-        System.out.println(zavod.nejlepsiSoustriky());
+        //System.out.println(zavod);
+        //System.out.println(zavod.nejlepiSestriky());
+        //System.out.println(zavod.nejlepsiSoustriky());
     }
 }

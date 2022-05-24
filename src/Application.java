@@ -1,11 +1,13 @@
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Application {
 
     public static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Zadej název Soutěže:");
         String nazev = sc.nextLine();
         System.out.println("Zadej rok konání:");
@@ -81,6 +83,7 @@ public class Application {
                 } while (volbaKategorie != 0);
                 break;
             case 2:
+                zavod.stratovniListina(new File("Start.csv"));
                 break;
         }
         System.out.println(zavod.startovniListina());
@@ -181,7 +184,7 @@ public class Application {
         System.out.println("Exportovat do souboru? (a/n)");
         String exp = sc.next();
         if(exp.equalsIgnoreCase("a")){
-            
+            zavod.vysledkovaListina(new File("vysledky.csv"));
         }
         
     }
