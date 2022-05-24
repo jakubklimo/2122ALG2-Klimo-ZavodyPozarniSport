@@ -23,4 +23,5 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 </ul>
 <p>Startovní listinu bude možné nahrát ze souboru .csv</p>
 <p>Po ukončení bude možnost exportovat výsledkovou listinu do souboru</p>
+<h1>Řešení</h1>
 ![ClassDiagram](https://user-images.githubusercontent.com/100779403/170049803-5dbfbb24-25d3-4681-b3d6-e11bb4651d1a.png)
