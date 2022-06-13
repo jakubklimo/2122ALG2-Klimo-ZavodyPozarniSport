@@ -1,4 +1,7 @@
+package app;
 
+
+import app.Tymy;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -41,6 +44,10 @@ public class Zavod {
 
     public void setHlavniRozhodci(String jmeno) {
         rozhodci[0] = jmeno;
+    }
+    
+    public String getHlavniRozhodci(){
+        return rozhodci[0];
     }
 
     public void setStarter(String jmeno) {
@@ -323,6 +330,19 @@ public class Zavod {
         return pocet;
     }
     
+    public void seznamRozhodcich(File rozhodci) throws FileNotFoundException, IOException{
+        try (BufferedReader reader = new BufferedReader(new FileReader(rozhodci))){
+            String line, jmeno;
+            int pom = 0;
+            while((line = reader.readLine()) != null){
+                jmeno = line;
+                
+                this.rozhodci[pom] = jmeno;
+                pom++;
+            }
+        }
+    }
+    
     public void stratovniListina(File startovka) throws FileNotFoundException, IOException{
         try (BufferedReader reader = new BufferedReader(new FileReader(startovka))){
             String line,nazev, kategorie;
@@ -418,6 +438,8 @@ public class Zavod {
         //zavod.setBoth(1, 'Z', 16.11, 18.11);
         //zavod.sortByPoradi();
         //zavod.kontrolaPlatnosti();
+        zavod.seznamRozhodcich(new File("Rozhodci.csv"));
+        System.out.println(zavod.getHlavniRozhodci());
         zavod.stratovniListina(new File("Start.csv"));
         System.out.println(zavod.startovniListina());
         //System.out.println(zavod);

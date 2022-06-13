@@ -1,3 +1,8 @@
+package app;
+
+import utils.Time;
+import utils.Kategorie;
+
 public class Tymy {
     private String nazevTymu;
     private Kategorie kategorie;

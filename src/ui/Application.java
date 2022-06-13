@@ -1,4 +1,7 @@
+package ui;
 
+
+import app.Zavod;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -23,25 +26,30 @@ public class Application {
             System.out.println("3) Rozhodčí na základně");
             System.out.println("4) Rozhodčí u terčů");
             System.out.println("5) Rozhodčí na měření hadic");
+            System.out.println("6) Načíst rozhočí ze souboru");
             System.out.println("0) Hotovo");
             volbaRozhodci = sc.nextInt();
             switch (volbaRozhodci) {
                 case 1 -> {
+                    System.out.println("Zadej jméno a přijmení:");
                     String rozhodciHl = sc.next();
                     rozhodciHl += sc.next();
                     zavod.setHlavniRozhodci(rozhodciHl);
                 }
                 case 2 -> {
+                    System.out.println("Zadej jméno a přijmení:");
                     String rozhodciS = sc.next();
                     rozhodciS += sc.next();
                     zavod.setStarter(rozhodciS);
                 }
                 case 3 -> {
+                    System.out.println("Zadej jméno a přijmení:");
                     String rozhodciZ = sc.next();
                     rozhodciZ += sc.next();
                     zavod.setRozhodciZakladny(rozhodciZ);
                 }
                 case 4 -> {
+                    System.out.println("Zadej jméno a přijmení:");
                     System.out.println("První:");
                     String rozhodciT1 = sc.next();
                     rozhodciT1 += sc.next();
@@ -51,9 +59,15 @@ public class Application {
                     zavod.setRozhodciTercu(rozhodciT1, rozhodciT2);
                 }
                 case 5 -> {
+                    System.out.println("Zadej jméno a přijmení:");
                     String rozhodciM = sc.next();
                     rozhodciM += sc.next();
                     zavod.setRozhodciMereniHadic(rozhodciM);
+                }
+                case 6 -> {
+                    zavod.seznamRozhodcich(new File("data/Rozhodci.csv"));
+                    volbaRozhodci = 0;
+                    break;
                 }
             }
         } while (volbaRozhodci != 0);
@@ -83,7 +97,7 @@ public class Application {
                 } while (volbaKategorie != 0);
                 break;
             case 2:
-                zavod.stratovniListina(new File("Start.csv"));
+                zavod.stratovniListina(new File("data/Start.csv"));
                 break;
         }
         System.out.println(zavod.startovniListina());
@@ -184,7 +198,7 @@ public class Application {
         System.out.println("Exportovat do souboru? (a/n)");
         String exp = sc.next();
         if(exp.equalsIgnoreCase("a")){
-            zavod.vysledkovaListina(new File("vysledky.csv"));
+            zavod.vysledkovaListina(new File("data/vysledky.csv"));
         }
         
     }
