@@ -24,4 +24,23 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 <p>Startovní listinu bude možné nahrát ze souboru .csv</p>
 <p>Po ukončení bude možnost exportovat výsledkovou listinu do souboru</p>
 <h1>Řešení</h1>
+<h2>Popis řešení v menu</h2>
+<li>Zadaní jména soutěže, roku konání a ročníku soutěže</li>
+<li>Zadání rozhodčích (volitelné), možnost nahrát ze souboru</li>
+<li>Zadání týmů, možnost nahrát ze souboru</li>
+<li>Možnost smazání týmu, nebo prohození týmů</li>
+<li>Zadání časů ke každému týmu, platný/neplatný čas</li>
+<li>Vypsat výsledky do konzole + nejlepší sestřiky a soustřiky</li>
+<li>Možnost exportovat výsledky do souboru csv, pdf a binárního souboru</li>
+<h2>Popis vstupních a výstupních souborů</h2>
+<p>Vstupní soubory jsou typu .csv, kde každá informace je oddělena středníkem (;). Oba soubory jsou ve složce data.</p>
+<p>Výstupní soubory jsou dohromady 3, jeden je typu .csv, druhý typu .pdf a třetí .bin. Všechny soubory se ukládají do složky data.</p>
+<h2>Class diagram</h2>
 ![ClassDiagram](https://user-images.githubusercontent.com/100779403/170049803-5dbfbb24-25d3-4681-b3d6-e11bb4651d1a.png)
+<h1>Externí knihovna</h1>
+<p>Pro export dat do pdf jsem zvolil knihovnu iTextpdf, kde jsem do knihovny nahrál soubor .jar ve kterém byla knihovna pdf.</p>
+<li>Document - vytvoření dokumentu</li>
+<li>PdfWriter - zápis do dokumentu</li>
+<li>FontFactory - vytvoření fontu</li>
+<li>Chunk - jednotlivé části dokumentu</li>
+<li>Paragraph - část textu - přidávám do něj jednotlivé chunky</li>
