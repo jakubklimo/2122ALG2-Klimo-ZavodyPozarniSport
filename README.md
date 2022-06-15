@@ -37,6 +37,20 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 <p>Výstupní soubory jsou dohromady 3, jeden je typu .csv, druhý typu .pdf a třetí .bin. Všechny soubory se ukládají do složky data.</p>
 <h2>Class diagram</h2>
 ![ClassDiagram](https://user-images.githubusercontent.com/100779403/170049803-5dbfbb24-25d3-4681-b3d6-e11bb4651d1a.png)
+<h1>Testování</h1>
+
+| Číslo testu | Typ testu                                | Výsledek | Prošel |
+|:-----------:|:----------------------------------------:|:--------:|:------:|
+| 1           | Nevalidní vstup; soubor nenalezen        |![Soubor nenalezen](https://user-images.githubusercontent.com/100779403/173930075-e00c1de5-44cb-4c29-bd61-47c3cf96bf91.png)| ano    |
+| 2           | Nevalidní vstup; Neplatné prohození týmů |![Neplatné prohození týmu](https://user-images.githubusercontent.com/100779403/173930239-2dee7590-c34e-4ddf-961d-f655c7db4821.png)| ano    |
+| 3           | Nevalidní vstup; Neplatné smazání týmu   |![Neplatné smazání týmu](https://user-images.githubusercontent.com/100779403/173930283-ac64ac2d-ba43-493d-b950-ad501f9e5fe1.png)| ano    |
+| 4           | Běžný stav; Nahrání týmů                 |![Nahrání týmů](https://user-images.githubusercontent.com/100779403/173930319-bd3f27da-e9f1-439d-b3b6-28aa09b60b98.png)| ano    |
+| 5           | Běžný stav; Prohození týmů               |![Prohození týmů](https://user-images.githubusercontent.com/100779403/173930353-77910a11-f812-4925-b94f-f00f71ce3c3c.png)| ano    |
+| 6           | Běžný stav; Smazání týmu                 |![Smazání týmu](https://user-images.githubusercontent.com/100779403/173930443-cc7967c7-c92b-41a9-8f7c-a797fca80f14.png)| ano    |
+| 7           | Běžný stav; Zápis platného času          |![Zápis platného času](https://user-images.githubusercontent.com/100779403/173930474-07328202-7fb2-4528-b9c6-f25ed6a0f00a.png)| ano    |
+| 8           | Běžný stav; Zápis neplatného času        |![Zápis neplatného času](https://user-images.githubusercontent.com/100779403/173930498-991acfa3-a950-45b6-b9ea-d5b8e692f2ba.png)| ano    |
+| 9           | Běžný stav; Vyhodnocení                  |![Vyhodnocení](https://user-images.githubusercontent.com/100779403/173930531-005f12c1-af2f-4dc1-b403-cfcf9661b213.png)| ano    |
+| 10          | Běžný stav; Export do pdf                |![Export do pdf](https://user-images.githubusercontent.com/100779403/173930555-216e31a3-ef4c-40e9-824d-b0398bcc52e4.png)| ano    |
 <h1>Externí knihovna</h1>
 <p>Pro export dat do pdf jsem zvolil knihovnu iTextpdf, kde jsem do knihovny nahrál soubor .jar ve kterém byla knihovna pdf.</p>
 <li>Document - vytvoření dokumentu</li>
