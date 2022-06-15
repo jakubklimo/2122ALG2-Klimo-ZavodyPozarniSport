@@ -175,7 +175,7 @@ public class Application {
                 case 2:
                     zavod.setNeplatny(i, 'M');
             }
-            
+            System.out.println(zavod.getCasy(i, 'M'));
         }
         System.out.println("Zápis časů žen:");
         for (int i = 1; i < zavod.getPocetTymuZ()+1; i++) {
@@ -194,7 +194,7 @@ public class Application {
                 case 2:
                     zavod.setNeplatny(i, 'Z');
             }
-            
+            System.out.println(zavod.getCasy(i, 'Z'));
         }
         zavod.kontrolaPlatnosti();
         System.out.println(zavod);
