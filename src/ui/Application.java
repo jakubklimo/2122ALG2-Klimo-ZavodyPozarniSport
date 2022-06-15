@@ -2,15 +2,20 @@ package ui;
 
 
 import app.Zavod;
+import com.itextpdf.text.DocumentException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import utils.ExceptionFileNotFound;
+import utils.ExceptionInputOutput;
+import utils.ExceptionTymNenalezen;
 
 public class Application {
 
     public static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws ExceptionTymNenalezen, ExceptionInputOutput, ExceptionFileNotFound, IOException, FileNotFoundException, DocumentException {
         System.out.println("Zadej název Soutěže:");
         String nazev = sc.nextLine();
         System.out.println("Zadej rok konání:");
@@ -130,6 +135,7 @@ public class Application {
                             zavod.sortByPoradi();
                             break;
                     }
+                    System.out.println(zavod.startovniListina());
                     break;
                 case 2:
                     System.out.println("1) Smazat tým mužů");
@@ -147,6 +153,7 @@ public class Application {
                             zavod.deleteTym(smazatZ, 'Z');
                             break;
                     }
+                    System.out.println(zavod.startovniListina());
                     break;
             }
         } while (volbaUprava != 0);
@@ -159,9 +166,9 @@ public class Application {
             int platM = sc.nextInt();
             switch(platM){
                 case 1:
-                    System.out.println("Čas levého terče:");
+                    System.out.println("Čas levého terče: (xx,xx)");
                     double casLPM = sc.nextDouble();
-                    System.out.println("Čas pravého terče:");
+                    System.out.println("Čas pravého terče: (xx,xx)");
                     double casPPM = sc.nextDouble(); 
                     zavod.setBoth(i, 'M', casLPM, casPPM);
                     break;
@@ -178,9 +185,9 @@ public class Application {
             int platZ = sc.nextInt();
             switch(platZ){
                 case 1:
-                    System.out.println("Čas levého terče:");
+                    System.out.println("Čas levého terče: (xx,xx)");
                     double casLPM = sc.nextDouble();
-                    System.out.println("Čas pravého terče:");
+                    System.out.println("Čas pravého terče: (xx,xx)");
                     double casPPM = sc.nextDouble(); 
                     zavod.setBoth(i, 'Z', casLPM, casPPM);
                     break;
@@ -199,6 +206,7 @@ public class Application {
         String exp = sc.next();
         if(exp.equalsIgnoreCase("a")){
             zavod.vysledkovaListina(new File("data/vysledky.csv"));
+            zavod.saveToPDF(new File("data/result.pdf"));
         }
         
     }

@@ -1,7 +1,14 @@
 package app;
 
 
-import app.Tymy;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -20,6 +27,9 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+import utils.ExceptionFileNotFound;
+import utils.ExceptionInputOutput;
+import utils.ExceptionTymNenalezen;
 
 public class Zavod {
 
@@ -83,6 +93,8 @@ public class Zavod {
                     tym.setPoradi(tym2);
                 } else if (tym.getPoradi() == tym2) {
                     tym.setPoradi(tym1);
+                }else{
+                    throw new ExceptionTymNenalezen("Tým nenalezen!");
                 }
             });
         } else {
@@ -91,6 +103,8 @@ public class Zavod {
                     tym.setPoradi(tym2);
                 } else if (tym.getPoradi() == tym2) {
                     tym.setPoradi(tym1);
+                }else{
+                    throw new ExceptionTymNenalezen("Tým nenalezen!");
                 }
             });
         }
@@ -106,7 +120,7 @@ public class Zavod {
             tymRemoved = zeny.remove(tym);
         }
         if (!tymRemoved) {
-            throw new NoSuchElementException("Tým nebyl nalezen!");
+            throw new ExceptionTymNenalezen("Tým nenalezen!");
         }
     }
 
@@ -124,7 +138,7 @@ public class Zavod {
                 }
             }
         }
-        throw new NoSuchElementException("Tým nenalezen!");
+        throw new ExceptionTymNenalezen("Tým nenalezen!");
     }
 
     public void setLP(int regNum, char kategorie, double cas) {
@@ -340,6 +354,10 @@ public class Zavod {
                 this.rozhodci[pom] = jmeno;
                 pom++;
             }
+        }catch (FileNotFoundException e) {
+            throw new ExceptionFileNotFound("Zadaný soubor nebyl nalezen!");
+        } catch (IOException e) {
+            throw new ExceptionInputOutput("Chyba při vstupu!");
         }
     }
     
@@ -360,6 +378,10 @@ public class Zavod {
                 }
             }
             reader.close();
+        }catch (FileNotFoundException e) {
+            throw new ExceptionFileNotFound("Zadaný soubor nebyl nalezen!");
+        }catch (IOException e) {
+            throw new ExceptionInputOutput("Chyba při vstupu!");
         }
     }
     
@@ -400,6 +422,8 @@ public class Zavod {
                 writer.print(tym.getVyslednePoradi());
                 writer.print("\n");
             }
+        }catch (FileNotFoundException e) {
+            throw new ExceptionFileNotFound("Zadaný soubor nebyl nalezen!");
         }
     }
     
@@ -422,26 +446,56 @@ public class Zavod {
             }
         }
     }
+    
+    public void saveToPDF(File result) throws FileNotFoundException, DocumentException{
+        vyslednePoradiM();
+        vyslednePoradiZ();
+        Document doc = new Document() {};
+        PdfWriter.getInstance((com.itextpdf.text.Document) doc, new FileOutputStream(result));
+        doc.open();
+        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+        Chunk nazev = new Chunk();
+        nazev.setFont(font);
+        nazev.append(jmenoZavodu).append(" ").append(rokKonani).append(" ").append(rocnik).append(".ročník").append("\n");
+        Chunk muziCh = new Chunk();
+        muziCh.setFont(font);
+        muzi.forEach(tym -> {
+            muziCh.append("").append(tym.getPoradi()).append(". ").append(tym.getTym()).append(" ").append(tym.getKategorie()).append(" ").append(tym.getLP()).append(" ").append(tym.getPP()).append(" ").append(tym.vyslednyCas()).append(" ").append(tym.getVyslednePoradi()).append("\n");
+        });
+        Chunk zenyCh = new Chunk();
+        zenyCh.setFont(font);
+        zeny.forEach(tym -> {
+            zenyCh.append("").append(tym.getPoradi()).append(". ").append(tym.getTym()).append(" ").append(tym.getKategorie()).append(" ").append(tym.getLP()).append(" ").append(tym.getPP()).append(" ").append(tym.vyslednyCas()).append(" ").append(tym.getVyslednePoradi()).append("\n");
+        });
+        
+        Paragraph out = new Paragraph();
+        out.add(nazev);
+        out.add(muziCh);
+        out.add(zenyCh);
+        doc.add(out);
+        doc.close();
+    }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, FileNotFoundException, DocumentException {
         Zavod zavod = new Zavod("Kosmonosy", 2022, 25);
-        //zavod.registerTym("Obrubce", 'M');
-        //zavod.registerTym("DC", 'm');
+        zavod.registerTym("Obrubce", 'M');
+        zavod.registerTym("DC", 'm');
         //zavod.registerTym("Kosmonosy", 'M');
         //zavod.registerTym("Kosmonosy", 'Z');
         //zavod.registerTym("Bukovno", 'Z');
         //zavod.deleteTym(2, 'M');
         //zavod.prohoditTymy(1, 2, 'M');
         //zavod.setBoth(3, 'M', 16.45, 16.46);
-        //zavod.setNeplatny(2, 'M');
-        //zavod.setBoth(1, 'M', 16.98, 17.05);
+        zavod.setNeplatny(2, 'M');
+        zavod.setBoth(1, 'M', 16.98, 17.05);
         //zavod.setBoth(1, 'Z', 16.11, 18.11);
         //zavod.sortByPoradi();
         //zavod.kontrolaPlatnosti();
-        zavod.seznamRozhodcich(new File("Rozhodci.csv"));
-        System.out.println(zavod.getHlavniRozhodci());
-        zavod.stratovniListina(new File("Start.csv"));
-        System.out.println(zavod.startovniListina());
+        //zavod.seznamRozhodcich(new File("Rozhodci.csv"));
+        //System.out.println(zavod.getHlavniRozhodci());
+        //zavod.stratovniListina(new File("Start.csv"));
+        //System.out.println(zavod.startovniListina());
+        zavod.saveToPDF(new File("Result.pdf"));
         //System.out.println(zavod);
         //System.out.println(zavod.nejlepiSestriky());
         //System.out.println(zavod.nejlepsiSoustriky());
