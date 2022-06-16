@@ -74,6 +74,13 @@ public class Application {
                     volbaRozhodci = 0;
                     break;
                 }
+                case 0 -> {
+                    break;
+                }
+                default -> {
+                    System.out.println("Špatná volba");
+                    System.out.println("\n");
+                }
             }
         } while (volbaRozhodci != 0);
         System.out.println("1) Zadat týmy ručně");
@@ -98,12 +105,18 @@ public class Application {
                             String nazevTymuZ = sc.next();
                             zavod.registerTym(nazevTymuZ, 'Z');
                             break;
+                        default:
+                            System.out.println("Špatná volba");
+                            System.out.println("\n");
                     }
                 } while (volbaKategorie != 0);
                 break;
             case 2:
                 zavod.stratovniListina(new File("data/Start.csv"));
                 break;
+            default:
+                System.out.println("Špatná volba");
+                System.out.println("\n");
         }
         System.out.println(zavod.startovniListina());
         int volbaUprava;
@@ -119,21 +132,36 @@ public class Application {
                     int volbaKat = sc.nextInt();
                     switch (volbaKat) {
                         case 1:
-                            System.out.println("Pořadí prvního týmu:");
-                            int prvniM = sc.nextInt();
-                            System.out.println("Pořadí druhého týmu:");
-                            int druhyM = sc.nextInt();
+                            int prvniM;
+                            do{
+                                System.out.println("Pořadí prvního týmu:");
+                                prvniM = sc.nextInt();
+                            }while(prvniM >= zavod.getPocetTymuM()+1);
+                            int druhyM;
+                            do{
+                                System.out.println("Pořadí druhého týmu:");
+                                druhyM = sc.nextInt();
+                            }while(druhyM >= zavod.getPocetTymuM()+1);
                             zavod.prohoditTymy(prvniM, druhyM, 'M');
                             zavod.sortByPoradi();
                             break;
                         case 2:
-                            System.out.println("Pořadí prvního týmu:");
-                            int prvniZ = sc.nextInt();
-                            System.out.println("Pořadí druhého týmu:");
-                            int druhyZ = sc.nextInt();
-                            zavod.prohoditTymy(prvniZ, druhyZ, 'M');
+                            int prvniZ;
+                            do{
+                                System.out.println("Pořadí prvního týmu:");
+                                prvniZ = sc.nextInt();
+                            }while(prvniZ >= zavod.getPocetTymuZ()+1);
+                            int druhyZ;
+                            do{
+                                System.out.println("Pořadí druhého týmu:");
+                                druhyZ = sc.nextInt();
+                            }while(druhyZ >= zavod.getPocetTymuZ()+1);
+                            zavod.prohoditTymy(prvniZ, druhyZ, 'Z');
                             zavod.sortByPoradi();
                             break;
+                        default:
+                            System.out.println("Špatná volba");
+                            System.out.println("\n");
                     }
                     System.out.println(zavod.startovniListina());
                     break;
@@ -143,18 +171,32 @@ public class Application {
                     int volbaKat1 = sc.nextInt();
                     switch (volbaKat1) {
                         case 1:
-                            System.out.println("Pořádí týmu:");
-                            int smazatM = sc.nextInt();
+                            int smazatM;
+                            do{
+                                System.out.println("Pořádí týmu:");
+                                smazatM = sc.nextInt();
+                            }while(smazatM >= zavod.getPocetTymuM()+1);
                             zavod.deleteTym(smazatM, 'M');
                             break;
                         case 2:
-                            System.out.println("Pořadí týmu:");
-                            int smazatZ = sc.nextInt();
+                            int smazatZ;
+                            do{
+                                System.out.println("Pořádí týmu:");
+                                smazatZ = sc.nextInt();
+                            }while(smazatZ >= zavod.getPocetTymuZ()+1);
                             zavod.deleteTym(smazatZ, 'Z');
                             break;
+                        default:
+                            System.out.println("Špatná volba");
+                            System.out.println("\n");
                     }
                     System.out.println(zavod.startovniListina());
                     break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Špatná volba");
+                    System.out.println("\n");
             }
         } while (volbaUprava != 0);
         System.out.println(zavod.startovniListina());
@@ -202,8 +244,15 @@ public class Application {
         System.out.println(zavod.nejlepiSestriky());
         System.out.println("Nejlepší soustřiky:");
         System.out.println(zavod.nejlepsiSoustriky());
-        System.out.println("Exportovat do souboru? (a/n)");
-        String exp = sc.next();
+        String exp;
+        boolean platny = false;
+        do{
+            System.out.println("Exportovat do souboru? (a/n)");
+            exp = sc.next();
+            if(exp.equalsIgnoreCase("a") || exp.equalsIgnoreCase("n")){
+                platny = true;
+            }
+        }while(platny != true);
         if(exp.equalsIgnoreCase("a")){
             zavod.vysledkovaListina(new File("data/vysledky.csv"));
             zavod.saveToPDF(new File("data/result.pdf"));

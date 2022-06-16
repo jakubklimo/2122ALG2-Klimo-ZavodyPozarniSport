@@ -85,22 +85,6 @@ public class Zavod {
             zeny.add(tym);
         }
     }
-    
-    public int pocetMuzu (){
-        int pocet = 0;
-        for(Tymy tym : muzi){
-            pocet++;
-        }
-        return pocet;
-    }
-    
-    public int pocetZen (){
-        int pocet = 0;
-        for(Tymy tym : zeny){
-            pocet++;
-        }
-        return pocet;
-    }
 
     public void prohoditTymy(int tym1, int tym2, char kategorie) {
         if (kategorie == 'M') {
@@ -109,9 +93,7 @@ public class Zavod {
                     tym.setPoradi(tym2);
                 } else if (tym.getPoradi() == tym2) {
                     tym.setPoradi(tym1);
-                }//else{
-                    //throw new ExceptionTymNenalezen("Tým nenalezen!");
-                //}
+                }
             });
         } else {
             zeny.forEach(tym -> {
@@ -119,8 +101,6 @@ public class Zavod {
                     tym.setPoradi(tym2);
                 } else if (tym.getPoradi() == tym2) {
                     tym.setPoradi(tym1);
-                }else{
-                    throw new ExceptionTymNenalezen("Tým nenalezen!");
                 }
             });
         }
