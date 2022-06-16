@@ -79,7 +79,7 @@ public class Application {
                 }
                 default -> {
                     System.out.println("Špatná volba");
-                    System.out.println("\n");
+                    System.out.print("\n");
                 }
             }
         } while (volbaRozhodci != 0);
@@ -107,16 +107,13 @@ public class Application {
                             break;
                         default:
                             System.out.println("Špatná volba");
-                            System.out.println("\n");
+                            System.out.print("\n");
                     }
                 } while (volbaKategorie != 0);
                 break;
             case 2:
                 zavod.stratovniListina(new File("data/Start.csv"));
                 break;
-            default:
-                System.out.println("Špatná volba");
-                System.out.println("\n");
         }
         System.out.println(zavod.startovniListina());
         int volbaUprava;
@@ -159,9 +156,6 @@ public class Application {
                             zavod.prohoditTymy(prvniZ, druhyZ, 'Z');
                             zavod.sortByPoradi();
                             break;
-                        default:
-                            System.out.println("Špatná volba");
-                            System.out.println("\n");
                     }
                     System.out.println(zavod.startovniListina());
                     break;
@@ -186,9 +180,6 @@ public class Application {
                             }while(smazatZ >= zavod.getPocetTymuZ()+1);
                             zavod.deleteTym(smazatZ, 'Z');
                             break;
-                        default:
-                            System.out.println("Špatná volba");
-                            System.out.println("\n");
                     }
                     System.out.println(zavod.startovniListina());
                     break;
@@ -196,7 +187,7 @@ public class Application {
                     break;
                 default:
                     System.out.println("Špatná volba");
-                    System.out.println("\n");
+                    System.out.print("\n");
             }
         } while (volbaUprava != 0);
         System.out.println(zavod.startovniListina());
