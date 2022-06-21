@@ -52,7 +52,7 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 | 7           | Běžný stav; Zápis platného času          |![Zápis platného času](https://user-images.githubusercontent.com/100779403/173930474-07328202-7fb2-4528-b9c6-f25ed6a0f00a.png)| ano    |
 | 8           | Běžný stav; Zápis neplatného času        |![Zápis neplatného času](https://user-images.githubusercontent.com/100779403/173930498-991acfa3-a950-45b6-b9ea-d5b8e692f2ba.png)| ano    |
 | 9           | Běžný stav; Vyhodnocení                  |![Vyhodnocení](https://user-images.githubusercontent.com/100779403/173930531-005f12c1-af2f-4dc1-b403-cfcf9661b213.png)| ano    |
-| 10          | Běžný stav; Export do pdf                |![Export do pdf](https://user-images.githubusercontent.com/100779403/173930555-216e31a3-ef4c-40e9-824d-b0398bcc52e4.png)| ano    |
+| 10          | Běžný stav; Export do pdf                |![Export do pdf](https://user-images.githubusercontent.com/100779403/174800358-45e88549-d5e4-4085-af21-b45fc323238a.png)| ano    |
 <h1>Externí knihovna</h1>
 <p>Pro export dat do pdf jsem zvolil knihovnu iTextpdf, kde jsem do knihovny nahrál soubor .jar ve kterém byla knihovna pdf.</p>
 <li>Document - vytvoření dokumentu</li>
