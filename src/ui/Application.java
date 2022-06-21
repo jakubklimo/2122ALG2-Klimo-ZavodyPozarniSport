@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import utils.ExceptionChybnyRozmer;
 import utils.ExceptionFileNotFound;
 import utils.ExceptionInputOutput;
 import utils.ExceptionTymNenalezen;
@@ -70,7 +71,11 @@ public class Application {
                     zavod.setRozhodciMereniHadic(rozhodciM);
                 }
                 case 6 -> {
-                    zavod.seznamRozhodcich(new File("data/Rozhodci.csv"));
+                    try{
+                        zavod.seznamRozhodcich(new File("data/Rozhodci.csv"));
+                    }catch(ExceptionFileNotFound e){
+                        System.out.println("Soubor nebyl nelezen!\n");
+                    }
                     volbaRozhodci = 0;
                     break;
                 }
@@ -129,31 +134,27 @@ public class Application {
                     int volbaKat = sc.nextInt();
                     switch (volbaKat) {
                         case 1:
-                            int prvniM;
-                            do{
+                            try{
                                 System.out.println("Pořadí prvního týmu:");
-                                prvniM = sc.nextInt();
-                            }while(prvniM >= zavod.getPocetTymuM()+1);
-                            int druhyM;
-                            do{
+                                int prvniM = sc.nextInt();
                                 System.out.println("Pořadí druhého týmu:");
-                                druhyM = sc.nextInt();
-                            }while(druhyM >= zavod.getPocetTymuM()+1);
-                            zavod.prohoditTymy(prvniM, druhyM, 'M');
+                                int druhyM = sc.nextInt();
+                                zavod.prohoditTymy(prvniM, druhyM, 'M');
+                            }catch(ExceptionChybnyRozmer e){
+                                System.out.println("Chybný rozměr!\n");
+                            }
                             zavod.sortByPoradi();
                             break;
                         case 2:
-                            int prvniZ;
-                            do{
+                            try{
                                 System.out.println("Pořadí prvního týmu:");
-                                prvniZ = sc.nextInt();
-                            }while(prvniZ >= zavod.getPocetTymuZ()+1);
-                            int druhyZ;
-                            do{
+                                int prvniZ = sc.nextInt();
                                 System.out.println("Pořadí druhého týmu:");
-                                druhyZ = sc.nextInt();
-                            }while(druhyZ >= zavod.getPocetTymuZ()+1);
-                            zavod.prohoditTymy(prvniZ, druhyZ, 'Z');
+                                int druhyZ = sc.nextInt();
+                                zavod.prohoditTymy(prvniZ, druhyZ, 'M');
+                            }catch(ExceptionChybnyRozmer e){
+                                System.out.println("Chybný rozměr!\n");
+                            }
                             zavod.sortByPoradi();
                             break;
                     }
@@ -165,20 +166,22 @@ public class Application {
                     int volbaKat1 = sc.nextInt();
                     switch (volbaKat1) {
                         case 1:
-                            int smazatM;
-                            do{
+                            try{
                                 System.out.println("Pořádí týmu:");
-                                smazatM = sc.nextInt();
-                            }while(smazatM >= zavod.getPocetTymuM()+1);
-                            zavod.deleteTym(smazatM, 'M');
+                                int smazatM = sc.nextInt();
+                                zavod.deleteTym(smazatM, 'M');
+                            }catch(ExceptionChybnyRozmer e){
+                                System.out.println("Chybný rozměr!\n");
+                            }
                             break;
                         case 2:
-                            int smazatZ;
-                            do{
+                            try{
                                 System.out.println("Pořádí týmu:");
-                                smazatZ = sc.nextInt();
-                            }while(smazatZ >= zavod.getPocetTymuZ()+1);
-                            zavod.deleteTym(smazatZ, 'Z');
+                                int smazatZ = sc.nextInt();
+                                zavod.deleteTym(smazatZ, 'Z');
+                            }catch(ExceptionChybnyRozmer e){
+                                System.out.println("Chybný rozměr!\n");
+                            }
                             break;
                     }
                     System.out.println(zavod.startovniListina());
@@ -247,6 +250,8 @@ public class Application {
         if(exp.equalsIgnoreCase("a")){
             zavod.vysledkovaListina(new File("data/vysledky.csv"));
             zavod.saveToPDF(new File("data/result.pdf"));
+            zavod.saveToBinary(new File("data/BinRes"));
+            System.out.println(zavod.readFromBinary(new File("data/BinRes")));
         }
         
     }

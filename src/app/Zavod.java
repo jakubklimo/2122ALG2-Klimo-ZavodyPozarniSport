@@ -2,6 +2,8 @@ package app;
 
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -11,8 +13,11 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -27,21 +32,20 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+import utils.ExceptionChybnyRozmer;
 import utils.ExceptionFileNotFound;
 import utils.ExceptionInputOutput;
 import utils.ExceptionTymNenalezen;
 
 public class Zavod {
 
-    private ArrayList<Tymy> muzi;
-    private ArrayList<Tymy> zeny;
+    private ArrayList<Tym> muzi;
+    private ArrayList<Tym> zeny;
 
     private String jmenoZavodu;
     private int rokKonani;
     private int rocnik;
     private String[] rozhodci = new String[6];
-    
-    private String[] split;
     
     public Zavod(String jmenoZavodu, int rokKonani, int rocnik) {
         this.jmenoZavodu = jmenoZavodu;
@@ -78,7 +82,7 @@ public class Zavod {
     }
 
     public void registerTym(String nazev, char kategorie) {
-        Tymy tym = new Tymy(nazev, kategorie);
+        Tym tym = new Tym(nazev, kategorie);
         if (tym.getKategorie() == 'M') {
             muzi.add(tym);
         } else {
@@ -87,6 +91,19 @@ public class Zavod {
     }
 
     public void prohoditTymy(int tym1, int tym2, char kategorie) {
+        if(kategorie == 'M'){
+            if(tym1 > getPocetTymuM() || tym1 <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + tym1);
+            }else if(tym2 > getPocetTymuM() || tym2 <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + tym2);
+            }
+        }else{
+            if(tym1 > getPocetTymuZ() || tym1 <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + tym1);
+            }else if(tym2 > getPocetTymuZ() || tym2 <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + tym2);
+            }
+        }
         if (kategorie == 'M') {
             muzi.forEach(tym -> {
                 if (tym.getPoradi() == tym1) {
@@ -107,12 +124,21 @@ public class Zavod {
     }
 
     public void deleteTym(int regNum, char kategorie) {
+        if(kategorie == 'M'){
+            if(regNum > getPocetTymuM() || regNum <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + regNum);
+            }
+        }else{
+            if(regNum > getPocetTymuZ() || regNum <= 0){
+                throw new ExceptionChybnyRozmer("Neplatny rozmer " + regNum);
+            }
+        }
         boolean tymRemoved;
         if (kategorie == 'M') {
-            Tymy tym = findTym(regNum, kategorie);
+            Tym tym = findTym(regNum, kategorie);
             tymRemoved = muzi.remove(tym);
         } else {
-            Tymy tym = findTym(regNum, kategorie);
+            Tym tym = findTym(regNum, kategorie);
             tymRemoved = zeny.remove(tym);
         }
         if (!tymRemoved) {
@@ -120,15 +146,15 @@ public class Zavod {
         }
     }
 
-    public Tymy findTym(int regNum, char kategorie) {
+    public Tym findTym(int regNum, char kategorie) {
         if (kategorie == 'M') {
-            for (Tymy tym : muzi) {
+            for (Tym tym : muzi) {
                 if (tym.getPoradi() == regNum) {
                     return tym;
                 }
             }
         } else {
-            for (Tymy tym : zeny) {
+            for (Tym tym : zeny) {
                 if (tym.getPoradi() == regNum) {
                     return tym;
                 }
@@ -164,14 +190,14 @@ public class Zavod {
     
     public String getCasy(int poradi, char kat){
         StringBuilder s = new StringBuilder();
-        Tymy tym = findTym(poradi, kat);
+        Tym tym = findTym(poradi, kat);
         s.append("LP: ").append(tym.getLP()).append(" PP: ").append(tym.getPP()).append(" Výsledný: ").append(tym.vyslednyCas());
         return s.toString();
     }
 
     public void sortByPoradi() {
-        Collections.sort(muzi, (Tymy o1, Tymy o2) -> o1.getPoradi() - o2.getPoradi());
-        Collections.sort(zeny, (Tymy o1, Tymy o2) -> o1.getPoradi() - o2.getPoradi());
+        Collections.sort(muzi, (Tym o1, Tym o2) -> o1.getPoradi() - o2.getPoradi());
+        Collections.sort(zeny, (Tym o1, Tym o2) -> o1.getPoradi() - o2.getPoradi());
     }
 
     public String startovniListina() {
@@ -191,7 +217,7 @@ public class Zavod {
     public String nejlepiSestriky() {
         double nejlepsiM = 0;
         int tymM = 1;
-        for (Tymy tym : muzi) {
+        for (Tym tym : muzi) {
             if (tym.lepsiCas() != 9999.99 && tym.lepsiCas() != 0.0) {
                 if (nejlepsiM == 0) {
                     nejlepsiM = tym.lepsiCas();
@@ -204,7 +230,7 @@ public class Zavod {
         }
         double nejlepsiZ = 0;
         int tymZ = 1;
-        for (Tymy tym : zeny) {
+        for (Tym tym : zeny) {
             if (tym.lepsiCas() != 9999.99 && tym.lepsiCas() != 0.0) {
                 if (nejlepsiZ == 0) {
                     nejlepsiZ = tym.lepsiCas();
@@ -233,7 +259,7 @@ public class Zavod {
         int pom = 0;
         double nejlepsiM = 0;
         int tymM = 1;
-        for (Tymy tym : muzi) {
+        for (Tym tym : muzi) {
             if (tym.getLP() != 9999.99 && tym.getPP() != 9999.99 && tym.getLP() != 0.0 && tym.getPP() != 0.0) {
                 if (pom == 0) {
                     nejlepsiM = tym.rozdilovyCas();
@@ -248,7 +274,7 @@ public class Zavod {
         pom = 0;
         double nejlepsiZ = 0;
         int tymZ = 1;
-        for (Tymy tym : zeny) {
+        for (Tym tym : zeny) {
             if (tym.getLP() != 9999.99 && tym.getPP() != 9999.99 && tym.getLP() != 0.0 && tym.getPP() != 0.0) {
                 if (pom == 0) {
                     nejlepsiZ = tym.rozdilovyCas();
@@ -277,13 +303,13 @@ public class Zavod {
     public void vyslednePoradiM(){
         double[] vysledne = new double[100];
         int i = 0;
-        for(Tymy tym : muzi){
+        for(Tym tym : muzi){
             vysledne[i] = tym.lepsiCas();
             i++;
         }
         Arrays.sort(vysledne);
         int pom;
-        for(Tymy tym : muzi){
+        for(Tym tym : muzi){
             pom = 0;
             for (int h = 0; h < vysledne.length; h++) {
                 if(vysledne[h] == 0){
@@ -299,13 +325,13 @@ public class Zavod {
     public void vyslednePoradiZ(){
         double[] vysledne = new double[100];
         int i = 0;
-        for(Tymy tym : zeny){
+        for(Tym tym : zeny){
             vysledne[i] = tym.lepsiCas();
             i++;
         }
         Arrays.sort(vysledne);
         int pom;
-        for(Tymy tym : zeny){
+        for(Tym tym : zeny){
             pom = 0;
             for (int h = 0; h < vysledne.length; h++) {
                 if(vysledne[h] == 0){
@@ -364,10 +390,10 @@ public class Zavod {
         }
     }
     
-    public void stratovniListina(File startovka) throws FileNotFoundException, IOException{
+    public void stratovniListina(File startovka){
         try (BufferedReader reader = new BufferedReader(new FileReader(startovka))){
             String line,nazev, kategorie;
-            
+            String[] split;
             while((line = reader.readLine()) != null){
                 split = line.split(";");
                 
@@ -375,14 +401,13 @@ public class Zavod {
                 kategorie = split[1];
                 
                 if("M".equals(kategorie)){
-                    muzi.add(new Tymy(nazev, 'M'));
+                    muzi.add(new Tym(nazev, 'M'));
                 }else if("Z".equals(kategorie)){
-                    zeny.add(new Tymy(nazev, 'Z'));
+                    zeny.add(new Tym(nazev, 'Z'));
                 }
             }
-            reader.close();
         }catch (FileNotFoundException e) {
-            throw new ExceptionFileNotFound("Zadaný soubor nebyl nalezen!");
+            throw new ExceptionFileNotFound("Zadaný soubor" + startovka.getName() + "nebyl nalezen!");
         }catch (IOException e) {
             throw new ExceptionInputOutput("Chyba při vstupu!");
         }
@@ -393,7 +418,7 @@ public class Zavod {
             vyslednePoradiM();
             vyslednePoradiZ();
             writer.println("Pořadí;Název;Kategorie;LP;PP;Výsledný čas;Výsledné pořadí");
-            for(Tymy tym : muzi){
+            for(Tym tym : muzi){
                 writer.print(tym.getPoradi());
                 writer.print(";");
                 writer.print(tym.getTym());
@@ -409,7 +434,7 @@ public class Zavod {
                 writer.print(tym.getVyslednePoradi());
                 writer.print("\n");
             }
-            for(Tymy tym : zeny){
+            for(Tym tym : zeny){
                 writer.print(tym.getPoradi());
                 writer.print(";");
                 writer.print(tym.getTym());
@@ -433,14 +458,15 @@ public class Zavod {
     public void saveToBinary(File result) throws FileNotFoundException, IOException{
         try(DataOutputStream out = new DataOutputStream(new FileOutputStream(result, true))){
             out.writeInt(muzi.size());
-            for(Tymy tym : muzi){
+            for(Tym tym : muzi){
                 out.writeUTF(tym.getTym());
                 out.writeChar(tym.getKategorie());
                 out.writeDouble(tym.getLP());
                 out.writeDouble(tym.getPP());
                 out.writeDouble(tym.vyslednyCas());
             }
-            for(Tymy tym : zeny){
+            out.writeInt(zeny.size());
+            for(Tym tym : zeny){
                 out.writeUTF(tym.getTym());
                 out.writeChar(tym.getKategorie());
                 out.writeDouble(tym.getLP());
@@ -448,6 +474,44 @@ public class Zavod {
                 out.writeDouble(tym.vyslednyCas());
             }
         }
+    }
+    
+    public String readFromBinary(File binRead) throws IOException{
+        StringBuilder s = new StringBuilder();
+        try (DataInputStream in = new DataInputStream(new FileInputStream(binRead))){
+            Boolean end = false;
+            int numMuzi = 0;
+            int numZeny = 0;
+            String nazev;
+            char kategorie;
+            double Lp,Pp,vysledny;
+            
+            while(!end){
+                try{
+                    numMuzi = in.readInt();
+                    for (int i = 0; i < numMuzi; i++) {
+                        nazev = in.readUTF();
+                        kategorie = in.readChar();
+                        Lp = in.readDouble();
+                        Pp = in.readDouble();
+                        vysledny = in.readDouble();
+                        s.append(nazev).append(" ").append(kategorie).append(" ").append(Lp).append(" ").append(Pp).append(" ").append(vysledny).append("\n");
+                    }
+                    numZeny = in.readInt();
+                    for (int i = 0; i < numZeny; i++) {
+                        nazev = in.readUTF();
+                        kategorie = in.readChar();
+                        Lp = in.readDouble();
+                        Pp = in.readDouble();
+                        vysledny = in.readDouble();
+                        s.append(nazev).append(" ").append(kategorie).append(" ").append(Lp).append(" ").append(Pp).append(" ").append(vysledny).append("\n");
+                    }
+                }catch (EOFException e) {
+                    end = true;
+                }
+            }
+        }
+        return s.toString();
     }
     
     public void saveToPDF(File result) throws FileNotFoundException, DocumentException{
@@ -460,21 +524,38 @@ public class Zavod {
         Chunk nazev = new Chunk();
         nazev.setFont(font);
         nazev.append(jmenoZavodu).append(" ").append(rokKonani).append(" ").append(rocnik).append(".ročník").append("\n");
-        Chunk muziCh = new Chunk();
-        muziCh.setFont(font);
-        muzi.forEach(tym -> {
-            muziCh.append("").append(tym.getPoradi()).append(". ").append(tym.getTym()).append(" ").append(tym.getKategorie()).append(" ").append(tym.getLP()).append(" ").append(tym.getPP()).append(" ").append(tym.vyslednyCas()).append(" ").append(tym.getVyslednePoradi()).append("\n");
-        });
-        Chunk zenyCh = new Chunk();
-        zenyCh.setFont(font);
-        zeny.forEach(tym -> {
-            zenyCh.append("").append(tym.getPoradi()).append(". ").append(tym.getTym()).append(" ").append(tym.getKategorie()).append(" ").append(tym.getLP()).append(" ").append(tym.getPP()).append(" ").append(tym.vyslednyCas()).append(" ").append(tym.getVyslednePoradi()).append("\n");
-        });
+        float[] columnWidths = {1f,1f,1f,1f,1f,1f,1f};
+        PdfPTable table = new PdfPTable(7);
+        table.setWidths(columnWidths);
+        table.addCell("Pořadí");
+        table.addCell("Název");
+        table.addCell("Kategorie");
+        table.addCell("Lp");
+        table.addCell("Pp");
+        table.addCell("Výsledný čas");
+        table.addCell("Výsledné pořadí");
+        for(Tym tym : muzi){
+            table.addCell("" + tym.getPoradi());
+            table.addCell(tym.getTym());
+            table.addCell("" + tym.getKategorie());
+            table.addCell("" + tym.getLP());
+            table.addCell("" + tym.getPP());
+            table.addCell("" + tym.vyslednyCas());
+            table.addCell("" + tym.getVyslednePoradi());
+        }
+        for(Tym tym : zeny){
+            table.addCell("" + tym.getPoradi());
+            table.addCell(tym.getTym());
+            table.addCell("" + tym.getKategorie());
+            table.addCell("" + tym.getLP());
+            table.addCell("" + tym.getPP());
+            table.addCell("" + tym.vyslednyCas());
+            table.addCell("" + tym.getVyslednePoradi());
+        }
         
         Paragraph out = new Paragraph();
         out.add(nazev);
-        out.add(muziCh);
-        out.add(zenyCh);
+        out.add(table);
         doc.add(out);
         doc.close();
     }
@@ -499,6 +580,8 @@ public class Zavod {
         //zavod.stratovniListina(new File("Start.csv"));
         //System.out.println(zavod.startovniListina());
         zavod.saveToPDF(new File("Result.pdf"));
+        zavod.saveToBinary(new File("Binary"));
+        System.out.println(zavod.readFromBinary(new File("Binary")));
         //System.out.println(zavod);
         //System.out.println(zavod.nejlepiSestriky());
         //System.out.println(zavod.nejlepsiSoustriky());

@@ -3,7 +3,7 @@ package app;
 import utils.Time;
 import utils.Kategorie;
 
-public class Tymy {
+public class Tym {
     private String nazevTymu;
     private Kategorie kategorie;
     private static int regNumM = 1;
@@ -14,7 +14,7 @@ public class Tymy {
     private int vyslednePoradi;
     
     
-    public Tymy(String nazevTymu, char kategorie){
+    public Tym(String nazevTymu, char kategorie){
         this.nazevTymu = nazevTymu;
         if(kategorie == 'M' || kategorie == 'm'){
             this.kategorie = Kategorie.M;

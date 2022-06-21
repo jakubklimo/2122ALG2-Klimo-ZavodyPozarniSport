@@ -1,12 +1,10 @@
 package utils;
 
-import java.io.FileNotFoundException;
-
 /**
  *
  * @author siror
  */
-public class ExceptionFileNotFound extends FileNotFoundException{
+public class ExceptionFileNotFound extends RuntimeException{
     public ExceptionFileNotFound(String message) {
         super(message);
     }

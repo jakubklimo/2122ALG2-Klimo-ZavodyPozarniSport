@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/app/Zavod.java</file>
-            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/app/Tymy.java</file>
+            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/app/Tym.java</file>
+            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/utils/ExceptionFileNotFound.java</file>
+            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/utils/ExceptionInputOutput.java</file>
+            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/utils/Kategorie.java</file>
             <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/ui/Application.java</file>
+            <file>file:/C:/Users/siror/Documents/ALG2-sem/2122ALG2-Klimo-ZavodyPozarniSport/src/utils/Time.java</file>
         </group>
     </open-files>
 </project-private>
