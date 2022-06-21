@@ -34,6 +34,8 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 <li>Možnost exportovat výsledky do souboru csv, pdf a binárního souboru</li>
 <h2>Popis vstupních a výstupních souborů</h2>
 <p>Vstupní soubory jsou typu .csv, kde každá informace je oddělena středníkem (;). Oba soubory jsou ve složce data.</p>
+<li>Soubor Start - Zadání ve formě - Název týmu;kategorie - na každém řádku jeden tým</li>
+<li>Soubor Rozhodci - Zadání ve formě - Jméno rozhodčího - na kždém řadku jeden rozhodčí</li>
 <p>Výstupní soubory jsou dohromady 3, jeden je typu .csv, druhý typu .pdf a třetí .bin. Všechny soubory se ukládají do složky data.</p>
 <h2>Class diagram</h2>
 ![ClassDiagram](https://user-images.githubusercontent.com/100779403/170049803-5dbfbb24-25d3-4681-b3d6-e11bb4651d1a.png)
@@ -41,9 +43,9 @@ tak zápis výsledků z časomíry a následné vyhodnocení pořadí a určení
 
 | Číslo testu | Typ testu                                | Výsledek | Prošel |
 |:-----------:|:----------------------------------------:|:--------:|:------:|
-| 1           | Nevalidní vstup; soubor nenalezen        |![Soubor nenalezen](https://user-images.githubusercontent.com/100779403/173930075-e00c1de5-44cb-4c29-bd61-47c3cf96bf91.png)| ano    |
-| 2           | Nevalidní vstup; Neplatné prohození týmů |![Neplatné prohození týmu](https://user-images.githubusercontent.com/100779403/173930239-2dee7590-c34e-4ddf-961d-f655c7db4821.png)| ano    |
-| 3           | Nevalidní vstup; Neplatné smazání týmu   |![Neplatné smazání týmu](https://user-images.githubusercontent.com/100779403/173930283-ac64ac2d-ba43-493d-b950-ad501f9e5fe1.png)| ano    |
+| 1           | Nevalidní vstup; soubor nenalezen        |![Soubor nenalezen](https://user-images.githubusercontent.com/100779403/174799739-be09fdb6-88ff-4dfe-a92a-cd231ba00821.png)| ano    |
+| 2           | Nevalidní vstup; Neplatné prohození týmů |![Neplatné prohození týmu](https://user-images.githubusercontent.com/100779403/174799794-cd4dca2e-2de3-4c51-b577-0f1d1a1a4499.png)| ano    |
+| 3           | Nevalidní vstup; Neplatné smazání týmu   |![Neplatné smazání týmu](https://user-images.githubusercontent.com/100779403/174799871-ee083aba-2740-4a69-8c1c-4b13fd72712e.png)| ano    |
 | 4           | Běžný stav; Nahrání týmů                 |![Nahrání týmů](https://user-images.githubusercontent.com/100779403/173930319-bd3f27da-e9f1-439d-b3b6-28aa09b60b98.png)| ano    |
 | 5           | Běžný stav; Prohození týmů               |![Prohození týmů](https://user-images.githubusercontent.com/100779403/173930353-77910a11-f812-4925-b94f-f00f71ce3c3c.png)| ano    |
 | 6           | Běžný stav; Smazání týmu                 |![Smazání týmu](https://user-images.githubusercontent.com/100779403/173930443-cc7967c7-c92b-41a9-8f7c-a797fca80f14.png)| ano    |
